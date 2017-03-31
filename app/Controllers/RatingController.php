@@ -13,32 +13,41 @@ use App\Models\Rating as Rating;
  */
 class RatingController
 {
-    public function index()
-    {
-        $ratings = Rating::all();
-        $view = new Renderer('views/rating/');
-        $view->ratings = $ratings;
-        $view->render('index.php');
-    }
+	public function index()
+	{
+		$ratings = Rating::all();
+		$view = new Renderer('views/rating/');
+		$view->ratings = $ratings;
+		$view->render('index.php');
+	}
 
-    public function show()
-    {
-        if (!isset($_GET['id']))
-            return route('home', 'error');
+	public function show()
+	{
+		if (!isset($_GET['id']))
+			return route('home', 'error');
 
-        $rating = Rating::find($_GET['id']);
-        $view = new Renderer('views/rating/');
-        $view->rating = $rating;
-        $view->render('show.php');
-    }
-    public function create(){
-//	if(!isset($_GET['rating']))
-//		return route('home','error');
-	echo "Hre";
-	$newrating = Rating::insertRating($_GET['author'], $_GET['date'],$_GET['website'],$_GET['rating']);
-	$view = new Renderer('views/rating/');
-	$view->newrating = $newrating;
-	$view->render('create.php');
-    }
+		$rating = Rating::find($_GET['id']);
+		$view = new Renderer('views/rating/');
+		$view->rating = $rating;
+		$view->render('show.php');
+	}
+	public function create(){
+		$newrating = Rating::insertRating($_POST['author'], $_POST['date'],$_POST['website'],$_POST['rating']);
+		$view = new Renderer('views/rating/');
+		$view->newrating = $newrating;
+		$view->render('create.php');
+	}
+	public function update(){
+		$updated = Rating::updateRating($_POST['author'],$_POST['date'],$_POST['website'],$_POST['rating'], $_POST['id']);
+		$view = new Renderer('views/rating/');
+		$view->updated = $updated;
+		$view->render('update.php');
+	}
+	public function delete(){
+		$deleted = Rating::deleteRating($_POST['id']);
+		$view = new Renderer('views/rating/');
+		$view->deleted = $deleted;
+		$view->render('delete.php');
+	}
 }
 
