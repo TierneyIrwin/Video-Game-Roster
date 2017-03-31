@@ -11,6 +11,19 @@ use App\Database\DB as DB;
  */
 class Companies
 {
+	public $name;
+	public $est;
+	public $ceo;
+	public $loc;
+	public $id;
+
+	public function __construct($id, $name, $est, $ceo, $loc){
+		$this->name = $name;
+		$this->est = $est;
+		$this->ceo = $ceo;
+		$this->loc = $loc;
+		$this->id = $id;
+	}
 	/**
 	 * Return all of the stored data
 	 *
@@ -30,44 +43,35 @@ class Companies
 		$stmt->bindParam(':location',$loc, PDO::PARAM_STR);
 		$stmt->execute();
 	}
-
+	public function all(){
+		$list = [];
+		$db = DB::prepare('SELECT * FROM companies');
+		$db->execute();
+		foreach($db->fetchAll() as $company){
+			$list[] = new Companies($company['id'],$company['name'],$company['established'],$company['ceo'],$company['location']);
+		}
+		return $list;
+	}
 	/**
 	       * Access only a single "record" of data for the given id (or index)
 	 */
-	public static function searchCompanies()
-	{
-		$sql = "SELECT * FROM companies";
-		$stmt = DB::prepare($sql);
-		$stmt->execute();
-		return $stmt;
-	}
 	public static function find($id)
 	{
-		$companies = array(
-				array(
-					'id' => 1,
-					'algorithm' => 'Bubble Sort',
-					'ranking' => 999
-				     ),
-				array(
-					'id' => 2,
-					'algorithm' => 'Insertion Sort',
-					'ranking' => 5
-				     ),
-				array(
-					'id' => 3,
-					'algorithm' => 'Merge Sort',
-					'ranking' => 2
-				     )
-				);
+		$id = intval($id);
+		$sql = "SELECT * FROM companies WHERE id = :id";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':id' => $id));
+		$row = $stmt->fetch();
+		return new Companies($row['id'],$row['name'], $row['established'],$row['ceo'],$row['location']);
+//new Companies($company['name'],$company['established'], $company['ceo'],$company['location']);
+	}
+	public static function updateCompany()
+	{
 
-		foreach ($companies as $company) {
-			if ($company['id'] == $id) {
-				return $company;
-			}
-		}
+	}
+	public static function deleteCompany()
+	{
 
-		return $companiess[0];
 	}
 }
 

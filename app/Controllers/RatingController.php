@@ -15,8 +15,8 @@ class RatingController
 {
     public function index()
     {
-        $ratings = Rating::complete();
-        $view = new Renderer('views/ratings/');
+        $ratings = Rating::all();
+        $view = new Renderer('views/rating/');
         $view->ratings = $ratings;
         $view->render('index.php');
     }
@@ -27,7 +27,7 @@ class RatingController
             return route('home', 'error');
 
         $rating = Rating::find($_GET['id']);
-        $view = new Renderer('views/ratings/');
+        $view = new Renderer('views/rating/');
         $view->rating = $rating;
         $view->render('show.php');
     }

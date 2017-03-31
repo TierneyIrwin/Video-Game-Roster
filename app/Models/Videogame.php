@@ -1,28 +1,36 @@
 <?php
 namespace App\Models;
+use App\Database\DB as DB;
 
 class Videogame
 {
-	public static function complete()
+	public $id;
+	public $name;
+	public $release;
+	public $platform;
+	public $genre;
+	public $comid;
+	public $ratid;
+
+	public function __construct($id, $name, $release, $platform,$genre, $comid, $ratid){
+		$this->id = $id;
+		$this->name = $name;
+		$this->release = $release;
+		$this->platform = $platform;
+		$this->genre = $genre;
+		$this->comid = $comid;
+		$this->ratid = $ratid;
+	}
+
+	public static function all()
 	{
-		$algorithms = array(
-				array(
-					'id' => 1,
-					'algorithm' => 'Bubble Sort',
-					'ranking' => 999
-				     ),
-				array(
-					'id' => 2,
-					'algorithm' => 'Insertion Sort',
-					'ranking' => 5
-				     ),
-				array(
-					'id' => 3,
-					'algorithm' => 'Merge Sort',
-					'ranking' => 2
-				     )
-				);
-		return $algorithms;
+		$list = [];
+		$db = DB::prepare('SELECT * FROM videogame');
+		$db->execute();
+		foreach($db->fetchAll() as $videogame) {
+			$list[] = new Videogame($videogame['id'],$videogame['name'], $videogame['release date'], $videogame['Platform'], $videogame['Genre'], $videogame['company_id'],$videogame['rating_id']);
+		}
+		return $list;
 	}
 
 	/**
@@ -33,31 +41,12 @@ class Videogame
 	 */
 	public static function find($id)
 	{
-		$algorithms = array(
-				array(
-					'id' => 1,
-					'algorithm' => 'Bubble Sort',
-					'ranking' => 999
-				     ),
-				array(
-					'id' => 2,
-					'algorithm' => 'Insertion Sort',
-					'ranking' => 5
-				     ),
-				array(
-					'id' => 3,
-					'algorithm' => 'Merge Sort',
-					'ranking' => 2
-				     )
-				);
-
-		foreach ($algorithms as $algorithm) {
-			if ($algorithm['id'] == $id) {
-				return $algorithm;
-			}
-		}
-
-		return $algorithms[0];
+		$id = intval($id);
+		$sql = "SELECT * FROM videogame WHERE id = :id";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':id' => $id));
+		$row = $stmt->fetch();
+		return new Videogame($row['id'], $row['name'], $row['release date'], $row['Platform'], $row['Genre'], $row['company_id'], $row['rating_id']);
 	}
 
 }

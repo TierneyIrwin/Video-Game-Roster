@@ -1,6 +1,6 @@
 <?php
 namespace App\Models;
-
+use App\Database\DB as DB;
 /**
  * Algorithm model class that provides a "dummy" data source
  * that will usually be comprised of accessing a database.
@@ -10,32 +10,33 @@ namespace App\Models;
  */
 class Rating
 {
+	public $author;
+	public $date;
+	public $website;
+	public $rating;
+	public $id;
+
+	public function __construct($id,$author,$date,$website,$rating){
+		$this->id = $id;
+		$this->author = $author;
+		$this->date = $date;
+		$this->website = $website;
+		$this->rating = $rating;
+	}
 	/**
 	 * Return all of the stored data
 	 *
 	 * @return number[][]|string[][]
 	 */
-	public static function complete()
+	public static function all()
 	{
-		$ratings = array(
-				array(
-					'id' => 1,
-					'algorithm' => 'Bubble Sort',
-					'ranking' => 999
-				     ),
-				array(
-					'id' => 2,
-					'algorithm' => 'Insertion Sort',
-					'ranking' => 5
-				     ),
-				array(
-					'id' => 3,
-					'algorithm' => 'Merge Sort',
-					'ranking' => 2
-				     )
-				);
-
-		return $ratings;
+		$list = [];
+		$db = DB::prepare('SELECT * FROM rating');
+		$db->execute();
+		foreach($db->fetchAll() as $rating){
+			$list[] = new Rating($rating['id'],$rating['author'],$rating['date'],$rating['website'],$rating['rating']);
+		}
+		return $list;
 	}
 
 	/**
@@ -43,31 +44,12 @@ class Rating
 	 */
 	public static function find($id)
 	{
-		$ratings = array(
-				array(
-					'id' => 1,
-					'algorithm' => 'Bubble Sort',
-					'ranking' => 999
-				     ),
-				array(
-					'id' => 2,
-					'algorithm' => 'Insertion Sort',
-					'ranking' => 5
-				     ),
-				array(
-					'id' => 3,
-					'algorithm' => 'Merge Sort',
-					'ranking' => 2
-				     )
-				);
-
-		foreach ($ratings as $rating) {
-			if ($rating['id'] == $id) {
-				return $rating;
-			}
-		}
-
-		return $ratings[0];
+		$id = intval($id);
+		$sql = "SELECT * FROM rating WHERE id = :id";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':id' => $id));
+		$row = $stmt->fetch();
+		return new Rating($row['id'],$row['author'],$row['date'],$row['website'],$row['rating']);
 	}
 }
 

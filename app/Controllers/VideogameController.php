@@ -7,7 +7,7 @@ class VideogameController
 {
 	public function index()
 	{
-		$videogames = Videogame::complete();
+		$videogames = Videogame::all();
 		$view = new Renderer('views/videogames/');
 		$view->videogames = $videogames;
 		$view->render('index.php');
@@ -15,9 +15,9 @@ class VideogameController
 
 	public function show()
 	{
-		if(!isset($_GET['vg_name']))
+		if(!isset($_GET['id']))
 			return route('home','error');
-		$videogame = Videogame::find($_GET['vg_name']);
+		$videogame = Videogame::find($_GET['id']);
 		$view = new Renderer('views/videogames/');
 		$view->videogame = $videogame;
 		$view->render('show.php');

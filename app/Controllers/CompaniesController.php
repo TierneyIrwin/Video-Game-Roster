@@ -15,10 +15,7 @@ class CompaniesController
 {
     public function index()
     {
-	if(!isset($_GET['companyname']))
-		$companies= Companies::searchCompanies();
-	else
-        	$companies = Companies::addCompany();
+        $companies = Companies::all();
         $view = new Renderer('views/companies/');
         $view->companies = $companies;
         $view->render('index.php');
@@ -28,11 +25,11 @@ class CompaniesController
     {
         if (!isset($_GET['id']))
             return route('home', 'error');
-
-        $company = Companies::searchCompanies($_GET['id']);
+        $company = Companies::find($_GET['id']);
         $view = new Renderer('views/companies/');
         $view->company = $company;
         $view->render('show.php');
     }
+    
 }
 
