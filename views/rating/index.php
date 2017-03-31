@@ -10,7 +10,7 @@
 <?php } ?>
 
 <h2>Enter a new Rating: </h2>
-<form action='?controller=rating&action=create' method="get">
+<form action='?controller=rating&action=create' method="post">
 <input type="text" name="author" value="Author"/>
 <input type="text" name="date" value="yyyy-mm-dd"/>
 <input type="text" name="website" value="Website"/>
