@@ -56,7 +56,20 @@ class Rating
 		$sql = "INSERT INTO `project3_tierney`.`rating` (`author`, `date`, `website`, `rating`) VALUES (:author, :date, :website, :rating)";
 		$stmt = DB::prepare($sql);
 		$stmt->execute(array(':author'=>$author, ':date'=>$date,':website'=>$website,':rating'=>$rating));
-		
+
+	}
+	public static function updateRating($author, $date, $website, $rating,$id)
+	{
+		$id=intval($id);
+		$sql= "UPDATE rating SET author = :author, date = :date, website = :website, rating = :rating WHERE id = :id";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':author'=>$author, ':date'=>$date, ':website'=>$website, ':rating'=>$rating, ':id'=>$id));
+	}
+	public static function deleteRating($id){
+		$id = intval($id);
+		$sql = "DELETE FROM rating WHERE id = :id";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':id'=>$id));
 	}
 }
 

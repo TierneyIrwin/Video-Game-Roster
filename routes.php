@@ -22,9 +22,9 @@
   }
 
   $controllers = array('main' => ['home', 'error'],
-                       'companies' => ['index','show'],
-			'rating' => ['index','show','create'],
-			'videogames' => ['index','add', 'show','update','deleteVG']);
+                       'companies' => ['index','show','create','update','delete'],
+			'rating' => ['index','show','create','update','delete'],
+			'videogames' => ['index','show','create','update','delete']);
 
   if (array_key_exists($controller, $controllers)) {
     if (in_array($action, $controllers[$controller])) {

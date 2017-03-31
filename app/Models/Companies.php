@@ -58,13 +58,19 @@ class Companies
 		return new Companies($row['id'],$row['name'], $row['established'],$row['ceo'],$row['location']);
 //new Companies($company['name'],$company['established'], $company['ceo'],$company['location']);
 	}
-	public static function updateCompany()
+	public static function updateCompany($companyname, $est, $ceo, $location,$id)
 	{
-
+		$id=intval($id);
+		$sql= "UPDATE companies SET name = :companyname, established = :established, ceo = :ceo, location = :location WHERE id = :id";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':companyname'=>$companyname, ':established'=>$est, ':ceo'=>$ceo, ':location'=>$location, ':id'=>$id));
 	}
-	public static function deleteCompany()
+	public static function deleteCompany($id)
 	{
-
+		$id = intval($id);
+		$sql = "DELETE FROM companies WHERE id = :id";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':id'=>$id));
 	}
 }
 

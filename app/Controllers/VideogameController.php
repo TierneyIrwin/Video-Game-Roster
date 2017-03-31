@@ -8,7 +8,7 @@ class VideogameController
 {
 	public function index()
 	{
-		$videogames = Videogame::all();
+		$videogames = Videogame::joins();
 		$view = new Renderer('views/videogames/');
 		$view->videogames = $videogames;
 		$companylist = Companies::all();
@@ -32,14 +32,14 @@ class VideogameController
 		$view->render('show.php');
 	}
 	public function create(){
-		$newVG = Videogame::insertVG($_POST['name'], $_POST['release_date'],$_POST['platform'],$_POST['genre'], $_POST['company'],$_POST['rating']);
+		$newVG = Videogame::insertVG($_POST['vg_name'], $_POST['release_date'],$_POST['platform'],$_POST['genre'], $_POST['company'],$_POST['rating']);
 		$view = new Renderer('views/videogames/');
 		$view->newVG = $newVG;
 		$view->render('create.php');
 	}
 	public function update(){
 
-		$updated = Videogame::updateVG($_POST['name'],$_POST['release_date'],$_POST['platform'],$_POST['genre'],$_POST['company'],$_POST['rating'], $_POST['id']);
+		$updated = Videogame::updateVG($_POST['vg_name'],$_POST['release_date'],$_POST['platform'],$_POST['genre'],$_POST['company'],$_POST['rating'], $_POST['id']);
 		$view = new Renderer('views/videogames/');
 		$view->updated = $updated;
 		$view->render('update.php');

@@ -22,3 +22,9 @@
 <input type="hidden" name="id" value="<?php echo $this->company->id;?>"/>
 <input type="submit" value="Update"/>
 </form>
+
+<h3> Or Do you want to Delete this Company listing? </h3>
+<form action='?controller=companies&action=delete' method='post'>
+<input type="hidden" name="id" value="<?php echo $this->company->id;?>"/>
+<input type="submit" value="Delete"/>
+</form>
