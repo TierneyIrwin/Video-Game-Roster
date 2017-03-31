@@ -51,5 +51,19 @@ class Rating
 		$row = $stmt->fetch();
 		return new Rating($row['id'],$row['author'],$row['date'],$row['website'],$row['rating']);
 	}
+
+	public static function insertRating($author,$date,$website,$rating){
+		$sql = "INSERT INTO rating (author, date, website, rating) VALUES (:author, :date, :website, :rating)";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':author'=>$author, ':date'=>$date,':website'=>$website,':rating'=>$rating));
+//		$stmt->bindParam(':author',$_GET['author'],PDO::PARAM_STR);
+//		$stmt->bindParam(':date',$_GET['date'],PDO::PARAM_STR);
+//		$stmt->bindParam(':website',$_GET['website'],PDO::PARAM_STR);
+//		$stmt->bindParam(':rating',$_GET['rating'],PDO::PARAM_INT);
+//		$stmt->execute();
+		echo "hello";
+		$row = $stmt->fetch();
+		return new Rating($row['id'], $row['author'],$row['date'],$row['website'],$row['rating']);
+	}
 }
 

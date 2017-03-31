@@ -7,6 +7,6 @@
 	echo $videogame->genre;
 	echo $videogame->comid;
 	echo $videogame->ratid; ?>
-<a href='?controller=videogame&action=show&id=<?php echo $videogame->id?>'>See</a>
+<a href='?controller=videogames&action=show&id=<?php echo $videogame->id?>'>See</a>
 </p>
 <?php } ?>

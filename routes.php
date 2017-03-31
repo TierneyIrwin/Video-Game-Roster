@@ -23,7 +23,7 @@
 
   $controllers = array('main' => ['home', 'error'],
                        'companies' => ['index','show'],
-			'rating' => ['index','add', 'show','update','deleteRating'],
+			'rating' => ['index','show','create'],
 			'videogames' => ['index','add', 'show','update','deleteVG']);
 
   if (array_key_exists($controller, $controllers)) {

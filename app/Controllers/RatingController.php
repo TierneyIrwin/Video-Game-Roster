@@ -31,5 +31,14 @@ class RatingController
         $view->rating = $rating;
         $view->render('show.php');
     }
+    public function create(){
+//	if(!isset($_GET['rating']))
+//		return route('home','error');
+	echo "Hre";
+	$newrating = Rating::insertRating($_GET['author'], $_GET['date'],$_GET['website'],$_GET['rating']);
+	$view = new Renderer('views/rating/');
+	$view->newrating = $newrating;
+	$view->render('create.php');
+    }
 }
 

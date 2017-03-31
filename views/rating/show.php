@@ -13,3 +13,5 @@
 		<td><?php echo $this->rating->rating;?></td>
 	</tr>
 </table>
+
+<input type="button" value="Return" onClick="history.go(-1);"/>
