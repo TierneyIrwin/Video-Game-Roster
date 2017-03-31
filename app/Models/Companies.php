@@ -29,20 +29,13 @@ class Companies
 	 *
 	 * @return number[][]|string[][]
 	 */
-	public static function addCompany()
+	public static function insertCompany($name, $est, $ceo, $loc)
 	{
 		$sql = "INSERT INTO companies (name, established, ceo, location) VALUES (:companyname, :established, :ceo, :location)";
 		$stmt = DB::prepare($sql);
-		$companyname = filter_input(INPUT_GET,'companyname');
-		$est = filter_input(INPUT_GET,'established');
-		$ceo = filter_input(INPUT_GET,'ceo');
-		$loc = filter_input(INPUT_GET,'location');
-		$stmt->bindParam(':companyname', $companyname, PDO::PARAM_STR);
-		$stmt->bindParam(':established', $est, PDO::PARAM_STR);
-		$stmt->bindParam(':ceo',$ceo, PDO::PARAM_STR);
-		$stmt->bindParam(':location',$loc, PDO::PARAM_STR);
-		$stmt->execute();
+		$stmt->execute(array(':companyname'=>$name,':established'=>$est, ':ceo'=>$ceo,':location'=>$loc));
 	}
+
 	public function all(){
 		$list = [];
 		$db = DB::prepare('SELECT * FROM companies');

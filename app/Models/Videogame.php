@@ -48,5 +48,9 @@ class Videogame
 		$row = $stmt->fetch();
 		return new Videogame($row['id'], $row['name'], $row['release date'], $row['Platform'], $row['Genre'], $row['company_id'], $row['rating_id']);
 	}
-
+	public static function insertVG($name, $release, $platform, $genre, $company_id, $rating_id){
+		$sql = "INSERT INTO `project3_tierney`.`videogames` (`name`,`release date`, `Platform`, `Genre`, `company_id`,`rating_id`) VALUES(:name, :release, :platform, :genre, :company_id, :rating_id)";
+		$stmt = DB::prepare($sql);
+		$stmt->execute(array(':name'=>$name, ':release'=>$release, ':platform'=>$platform, ':genre'=>$genre, ':company_id'=>$company_id, ":rating_id"=>$rating_id));
+	}
 }
