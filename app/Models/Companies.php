@@ -3,10 +3,9 @@ namespace App\Models;
 use App\Database\DB as DB;
 
 /**
- * Algorithm model class that provides a "dummy" data source
- * that will usually be comprised of accessing a database.
+ * Companies model class that provides access to a database.
  *
- * @author dplante
+ * @author TierneyIrwin
  *
  */
 class Companies
@@ -17,7 +16,9 @@ class Companies
 	public $loc;
 	public $id;
 
-	public function __construct($id, $name, $est, $ceo, $loc){
+	//Constructs the instance of the row from the database/information given.
+	public function __construct($id, $name, $est, $ceo, $loc)
+	{
 		$this->name = $name;
 		$this->est = $est;
 		$this->ceo = $ceo;
@@ -25,9 +26,9 @@ class Companies
 		$this->id = $id;
 	}
 	/**
-	 * Return all of the stored data
-	 *
-	 * @return number[][]|string[][]
+	 * Inserts a new row into the companies table based on the information
+	 * given.
+	 * 
 	 */
 	public static function insertCompany($name, $est, $ceo, $loc)
 	{
@@ -35,7 +36,8 @@ class Companies
 		$stmt = DB::prepare($sql);
 		$stmt->execute(array(':companyname'=>$name,':established'=>$est, ':ceo'=>$ceo,':location'=>$loc));
 	}
-
+	//Selects all information from the companies table to be instanced and sent into an array.
+	//@return $list[]
 	public function all(){
 		$list = [];
 		$db = DB::prepare('SELECT * FROM companies');
@@ -46,7 +48,7 @@ class Companies
 		return $list;
 	}
 	/**
-	       * Access only a single "record" of data for the given id (or index)
+	 * Access only a single "record" of data for the given id (or index)
 	 */
 	public static function find($id)
 	{
@@ -56,8 +58,8 @@ class Companies
 		$stmt->execute(array(':id' => $id));
 		$row = $stmt->fetch();
 		return new Companies($row['id'],$row['name'], $row['established'],$row['ceo'],$row['location']);
-//new Companies($company['name'],$company['established'], $company['ceo'],$company['location']);
 	}
+	//Updates the row specified by the id taken in with the parameters taken in
 	public static function updateCompany($companyname, $est, $ceo, $location,$id)
 	{
 		$id=intval($id);
@@ -65,6 +67,7 @@ class Companies
 		$stmt = DB::prepare($sql);
 		$stmt->execute(array(':companyname'=>$companyname, ':established'=>$est, ':ceo'=>$ceo, ':location'=>$location, ':id'=>$id));
 	}
+	//Deletes the row specified by the id taken in.
 	public static function deleteCompany($id)
 	{
 		$id = intval($id);

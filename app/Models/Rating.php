@@ -2,10 +2,9 @@
 namespace App\Models;
 use App\Database\DB as DB;
 /**
- * Algorithm model class that provides a "dummy" data source
- * that will usually be comprised of accessing a database.
+ * Rating model class that provides access to the database.
  *
- * @author dplante
+ * @author TierneyIrwin
  *
  */
 class Rating
@@ -16,7 +15,9 @@ class Rating
 	public $rating;
 	public $id;
 
-	public function __construct($id,$author,$date,$website,$rating){
+	//Constructs an instance of the rating specified by the parameters.
+	public function __construct($id,$author,$date,$website,$rating)
+	{
 		$this->id = $id;
 		$this->author = $author;
 		$this->date = $date;
@@ -24,9 +25,9 @@ class Rating
 		$this->rating = $rating;
 	}
 	/**
-	 * Return all of the stored data
-	 *
-	 * @return number[][]|string[][]
+	 * Queries the database for all information from the rating table
+	 * to be given to the controller.
+	 * @return $list[]
 	 */
 	public static function all()
 	{
@@ -40,7 +41,7 @@ class Rating
 	}
 
 	/**
-	       * Access only a single "record" of data for the given id (or index)
+	 * Access only a single "record" of data for the given id (or index)
 	 */
 	public static function find($id)
 	{
@@ -51,13 +52,17 @@ class Rating
 		$row = $stmt->fetch();
 		return new Rating($row['id'],$row['author'],$row['date'],$row['website'],$row['rating']);
 	}
-
-	public static function insertRating($author,$date,$website,$rating){
+	
+	//Inserts the information into a new row in the rating table.
+	public static function insertRating($author,$date,$website,$rating)
+	{
 		$sql = "INSERT INTO `project3_tierney`.`rating` (`author`, `date`, `website`, `rating`) VALUES (:author, :date, :website, :rating)";
 		$stmt = DB::prepare($sql);
 		$stmt->execute(array(':author'=>$author, ':date'=>$date,':website'=>$website,':rating'=>$rating));
 
 	}
+	
+	//Updates the row specified by the passed in id with the information given.
 	public static function updateRating($author, $date, $website, $rating,$id)
 	{
 		$id=intval($id);
@@ -65,7 +70,10 @@ class Rating
 		$stmt = DB::prepare($sql);
 		$stmt->execute(array(':author'=>$author, ':date'=>$date, ':website'=>$website, ':rating'=>$rating, ':id'=>$id));
 	}
-	public static function deleteRating($id){
+	
+	//Deletes the row specified by the id passed in.
+	public static function deleteRating($id)
+	{
 		$id = intval($id);
 		$sql = "DELETE FROM rating WHERE id = :id";
 		$stmt = DB::prepare($sql);

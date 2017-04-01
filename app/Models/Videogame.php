@@ -1,7 +1,10 @@
 <?php
 namespace App\Models;
 use App\Database\DB as DB;
-
+/*
+	Videogame model class the provides access to the database.
+	@author TierneyIrwin
+*/
 class Videogame
 {
 	public $id;
@@ -12,6 +15,7 @@ class Videogame
 	public $comid;
 	public $ratid;
 
+	//Constructs a new instance of the videogame class based on the information provided.
 	public function __construct($id, $name, $release, $platform,$genre, $comid, $ratid){
 		$this->id = $id;
 		$this->name = $name;
@@ -21,15 +25,21 @@ class Videogame
 		$this->comid = $comid;
 		$this->ratid = $ratid;
 	}
+	
+	//Joins all the tables together to be given to the controller.
+	//@return []
 	public static function joins(){
 		$list = [];
-		$db = DB::prepare('SELECT vg_name,release_date,platform,genre,companies.name,companies.location, rating.website, rating.rating  from videogame INNER JOIN companies ON companies.id = videogame.company_id INNER JOIN rating ON rating.id = videogame.rating_id');
+		$db = DB::prepare('SELECT vg_name,release_date,platform,genre,companies.name,companies.location, rating.website, rating.rating,videogame.id  from videogame INNER JOIN companies ON companies.id = videogame.company_id INNER JOIN rating ON rating.id = videogame.rating_id');
 		$db->execute();
 		foreach($db->fetchAll() as $joins){
-			$list[] = array($joins['vg_name'],$joins['release_date'],$joins['platform'],$joins['genre'],$joins['name'],$joins['location'],$joins['website'],$joins['rating']);
+			$list[] = array($joins['vg_name'],$joins['release_date'],$joins['platform'],$joins['genre'],$joins['name'],$joins['location'],$joins['website'],$joins['rating'], $joins['id']);
 		}	
 		return $list;
 	}
+	
+	//Takes all information in the videogame class to be given to the controller.
+	//@return []
 	public static function all()
 	{
 		$list = [];
@@ -57,7 +67,9 @@ class Videogame
 		return new Videogame($row['id'], $row['vg_name'], $row['release_date'], $row['platform'], $row['genre'], $row['company_id'], $row['rating_id']);
 	}
 
-	public static function insertVG($name, $release, $platform, $genre, $company_id, $rating_id){
+	//Inserts the information provided into a new row in the table.
+	public static function insertVG($name, $release, $platform, $genre, $company_id, $rating_id)
+	{
 		$sqlCompany = "SELECT * FROM companies WHERE name = :name";
 		$stmtC = DB::prepare($sqlCompany);
 		$exec = $stmtC->execute(array(':name'=>$company_id));
@@ -75,6 +87,8 @@ class Videogame
 		$stmt = DB::prepare($sql);
 		$stmt->execute(array(':name'=>$name, ':release_date'=>$release, ':platform'=>$platform, ':genre'=>$genre, ':company_id'=>$row1, ":rating_id"=>$col1));
 	}
+
+	//Updates the specified row with the information provided.
 	public static function updateVG($name, $release, $platform, $genre, $company_id, $rating_id, $id)
 	{
 		$sqlC = "SELECT * FROM companies WHERE name = :name";
@@ -95,7 +109,10 @@ class Videogame
 		$stmt = DB::prepare($sql);
 		$stmt->execute(array(':name'=>$name, ':release_date'=>$release, ':platform'=>$platform, ':genre'=>$genre, ':company_id'=>$row1, ':rating_id'=>$col1, ':id'=>$id));
 	}
-	public static function deleteVG($id){
+
+	//Deletes the specified row from the table.
+	public static function deleteVG($id)
+	{
 		$id = intval($id);
 		$sql = "DELETE FROM videogame WHERE id = :id";
 		$stmt = DB::prepare($sql);
